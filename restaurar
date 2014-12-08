@@ -1,0 +1,28 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (paulojeronimo@gmail.com)
+set +x
+
+BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+source "$BASEDIR"/config || exit 1
+source "$BASEDIR"/defaults || exit 1
+
+[ $USER = vagrant ] && {
+    for d in ${SISLEGIS_USER_DIRS[*]}
+    do 
+        mkdir -p /vagrant/$d
+        [ -d ~/$d ] || ln -s /vagrant/$d ~/$d
+    done
+    f=/vagrant/"$VAGRANT_BACKUP_TAR"; [ -f "$f" ] && sudo tar xvfP "$f"
+    exit
+}
+
+grep -q ^$SISLEGIS_USER /etc/passwd || { echo "Usuário $SISLEGIS_USER não existe!"; exit; }
+cd "$BASEDIR"
+sudo bash <<EOF
+for d in ${SISLEGIS_USER_DIRS[*]}
+do
+    [ \$d = projetos ] && continue
+    rsync -av --update \$d ~$SISLEGIS_USER/
+    chown -R $SISLEGIS_USER: ~$SISLEGIS_USER/\$d
+done
+EOF

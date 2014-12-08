@@ -1,0 +1,15 @@
+#!/bin/bash
+
+USA_PROXY=false
+BAIXA_INSTALADORES=true
+
+export SISLEGIS_PORT=8080
+
+GITHUB_USER=paulojeronimo
+GITHUB_NAME='Paulo Jerônimo'
+GITHUB_EMAIL=paulojeronimo@gmail.com
+
+GITHUB_SISLEGIS_DOTFILES=http://github.com/pensandoodireito/sislegis-dotfiles
+GITHUB_SISLEGIS_AMBIENTE=http://github.com/pensandoodireito/sislegis-ambiente
+GITHUB_SISLEGIS_SITE=http://github.com/pensandoodireito/sislegis-site
+GITHUB_SISLEGIS_APP=http://github.com/pensandoodireito/sislegis-app

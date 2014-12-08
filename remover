@@ -1,0 +1,30 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (paulojeronimo@gmail.com)
+set +x
+
+BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+source "$BASEDIR"/config || exit 1
+source "$BASEDIR"/defaults || exit 1
+
+"$BASEDIR"/salvar
+
+[ $USER = vagrant ] && {
+    cd
+    f=sislegis-dotfiles/remove
+    [ -f "$f" ] && $f
+    find . -type l -delete
+    rm -rf .proxy .projetos .vagrant sislegis-*
+    exit
+}
+
+PIDS=`sudo ps -ef | grep ^$SISLEGIS_USER | awk '{print $2}'`
+[ "$PIDS" ] && sudo kill -9 $PIDS
+
+sudo userdel -rf $SISLEGIS_USER &> /dev/null || {
+    echo "Falha ao remover o usuário $SISLEGIS_USER."
+    echo "O ambiente já não foi removido?"
+    exit
+}
+
+f=~/.bashrc; e="^xhost.*$SISLEGIS_USER$"
+grep -q "$e" $f && { grep -v "$e" $f | tee $f > /dev/null; }

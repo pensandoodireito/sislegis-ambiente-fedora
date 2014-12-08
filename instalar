@@ -1,0 +1,74 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (email: paulojeronimo@gmail.com, twitter: @paulojeronimo)
+set +x
+
+BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+source "$BASEDIR"/config || exit 1
+source "$BASEDIR"/defaults || exit 1
+
+BAIXA_ARQUIVO=`$BAIXA_INSTALADORES && echo -n --baixa-arquivo || echo -n --nao-baixa-arquivo`
+X_INSTALADO=`type xhost &> /dev/null && echo -n true || echo -n false`
+
+sudo sed -i '
+  s/^\(%wheel.*ALL\)/#\1/
+  s/^#.*\(%wheel.*NOPASSWD.*\)/\1/
+' /etc/sudoers
+
+if [ $USER != vagrant ]
+then
+    sudo useradd -m -s /bin/bash -G wheel $SISLEGIS_USER &> /dev/null || {
+        echo "Falha ao criar usuário $SISLEGIS_USER."
+        echo "O ambiente já não está instalado?"
+        exit 1
+    }
+
+    $X_INSTALADO && {
+        cmd="xhost +si:localuser:$SISLEGIS_USER"; $cmd
+        f=~/.bashrc; grep -q "xhost.*$SISLEGIS_USER" $f || { echo "$cmd" >> $f; }
+    }
+else
+    SISLEGIS_USER=vagrant
+    sudo sed -i 's/\(keepcache=\).*/\11/' /etc/yum.conf
+fi
+
+"$BASEDIR"/restaurar
+
+sudo -i -u $SISLEGIS_USER bash <<EOF
+executar_e_inserir_no_bashrc() {
+    local cmd="\$@"
+    eval \$cmd; echo \$cmd >> ~/.bashrc
+}
+
+$X_INSTALADO && echo 'export DISPLAY=:0' >> ~/.bashrc
+
+executar_e_inserir_no_bashrc "export INSTALA_OPCS+=\" $BAIXA_ARQUIVO\""
+
+sudo yum -y install rsync tar unzip wget git tree dos2unix lsof redhat-lsb-core
+curl -sSL https://satya164.github.io/fedy/fedy-installer | sudo bash
+sudo fedy -e oracle_jdk
+
+git clone $GITHUB_SISLEGIS_DOTFILES
+${GITHUB_SISLEGIS_DOTFILES##*/}/install
+
+git config --global user.name '$GITHUB_NAME'
+git config --global user.email $GITHUB_EMAIL
+
+cat <<_EOF > ~/.projetos
+app=$GITHUB_SISLEGIS_APP
+site=$GITHUB_SISLEGIS_SITE
+_EOF
+
+git clone $GITHUB_SISLEGIS_AMBIENTE
+[ \$USER = vagrant ] && { 
+    echo 'export PROJETOS_DIR=~/projetos' > ${GITHUB_SISLEGIS_AMBIENTE##*/}/ambiente.config
+}
+${GITHUB_SISLEGIS_AMBIENTE##*/}/instalar
+
+source .\$(hostname -s)
+app_baixar
+app_remote_add_upstream
+app_update_and_deploy
+jboss_start
+EOF
+
+# vim: set ts=4 sw=4 expandtab:
