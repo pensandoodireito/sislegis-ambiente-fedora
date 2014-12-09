@@ -9,15 +9,13 @@ source "$BASEDIR"/defaults || exit 1
 [ $USER = vagrant ] && {
     sudo tar cvfP /vagrant/"$VAGRANT_BACKUP_TAR" /var/cache
     sudo tar rvfP /vagrant/"$VAGRANT_BACKUP_TAR" /fedy_dl
+    salvar-instaladores
     exit
 }
 
 grep -q ^$SISLEGIS_USER /etc/passwd || { echo "Usuário $SISLEGIS_USER não existe!"; exit; }
 
-sudo -i -u $SISLEGIS_USER bash <<EOF
-source .$(hostname -s)
-salvar_instaladores
-EOF
+sudo -i -u $SISLEGIS_USER salvar-instaladores
 
 cd "$BASEDIR"
 for d in ${SISLEGIS_USER_DIRS[*]}
