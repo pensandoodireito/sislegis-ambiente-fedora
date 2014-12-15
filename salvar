@@ -15,7 +15,8 @@ source "$BASEDIR"/defaults || exit 1
 
 grep -q ^$SISLEGIS_USER /etc/passwd || { echo "Usuário $SISLEGIS_USER não existe!"; exit; }
 
-sudo -i -u $SISLEGIS_USER salvar-instaladores
+sudo -i -u $SISLEGIS_USER \
+$(eval echo -n ~$SISLEGIS_USER/sislegis-ambiente/scripts/salvar-instaladores)
 
 cd "$BASEDIR"
 for d in ${SISLEGIS_USER_DIRS[*]}

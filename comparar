@@ -1,0 +1,39 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (paulojeoronimo@gmail.com)
+
+outro_ambiente=${outro_ambiente:-../sislegis-ambiente-ubuntu}
+vimdiff=${vimdiff:-false}
+
+[ -d "$outro_ambiente" ] || {
+    echo "Diretório \"$outro_ambiente\" não existe!"
+    exit
+}
+
+echo "Comparando arquivos com os do outro ambiente ($outro_ambiente):"
+
+for f in $(find . -type f ! \( \
+    -name . -o \
+    -name '*.tar' -o \
+    -path './.forge/*' -o \
+    -path './.m2/*' -o \
+    -path './.git/*' -o \
+    -path './.vagrant/*' -o \
+    -path './projetos/*' -o \
+    -path './sislegis-ambiente.instaladores/*' \
+    \))
+do
+    if [ -f "$outro_ambiente/$f" ]
+    then
+        if [ "$(diff "$f" "$outro_ambiente/$f")" ]
+        then
+            echo "Arquivo $f diverge!"
+            $vimdiff && vim -d "$f" "$outro_ambiente/$f"
+        else
+            echo "Arquivo $f confere!"
+        fi
+    else
+        echo "Arquivo $f não existe no outro ambiente!"
+    fi
+done
+
+# vim: set ts=4 sw=4 expandtab:
