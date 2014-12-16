@@ -14,4 +14,4 @@ sislegis-ambiente.instaladores
 
 # nome do arquivo de backup utilizado pelo Vagrant
 #   quando são chamados os scripts salvar e restaurar:
-VAGRANT_BACKUP_TAR=.vagrant.backup.tar
+VAGRANT_BACKUP_TAR=fedora.backup.tar

@@ -9,16 +9,19 @@ source "$BASEDIR"/defaults || exit 1
 [ $USER = vagrant ] && {
     for d in ${SISLEGIS_USER_DIRS[*]}
     do 
-        mkdir -p /vagrant/$d
-        [ -d ~/$d ] || ln -s /vagrant/$d ~/$d
+        mkdir -p /sislegis-ambiente-comum/$d
+        [ -L $d ] || ln -s /sislegis-ambiente-comum/$d ~/$d
     done
-    f=/vagrant/"$VAGRANT_BACKUP_TAR"; [ -f "$f" ] && sudo tar xvfP "$f"
+    f=/sislegis-ambiente-comum/"$VAGRANT_BACKUP_TAR"; [ -f "$f" ] && sudo tar xvfP "$f"
     exit
 }
 
 grep -q ^$SISLEGIS_USER /etc/passwd || { echo "Usuário $SISLEGIS_USER não existe!"; exit; }
-cd "$BASEDIR"
-sudo bash <<EOF
+comum="$BASEDIR"/../sislegis-ambiente-comum
+if [ -d "$comum" ]
+then
+    cd "$comum"
+    sudo bash <<EOF
 for d in ${SISLEGIS_USER_DIRS[*]}
 do
     [ \$d = projetos ] && continue
@@ -26,3 +29,6 @@ do
     chown -R $SISLEGIS_USER: ~$SISLEGIS_USER/\$d
 done
 EOF
+fi
+
+# vim: set ts=4 sw=4 expandtab:

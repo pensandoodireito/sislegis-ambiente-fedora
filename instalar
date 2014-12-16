@@ -43,7 +43,8 @@ $X_INSTALADO && echo 'export DISPLAY=:0' >> ~/.bashrc
 
 executar_e_inserir_no_bashrc "export INSTALA_OPCS+=\" $BAIXA_ARQUIVO\""
 
-sudo yum -y install rsync tar unzip wget git tree dos2unix lsof redhat-lsb-core
+sudo yum -y update
+sudo yum -y install rsync tar unzip wget git tree dos2unix lsof redhat-lsb-core vim
 curl -sSL https://satya164.github.io/fedy/fedy-installer | sudo bash
 sudo fedy -e oracle_jdk
 

@@ -7,8 +7,8 @@ source "$BASEDIR"/config || exit 1
 source "$BASEDIR"/defaults || exit 1
 
 [ $USER = vagrant ] && {
-    sudo tar cvfP /vagrant/"$VAGRANT_BACKUP_TAR" /var/cache
-    sudo tar rvfP /vagrant/"$VAGRANT_BACKUP_TAR" /fedy_dl
+    sudo tar cvfP /sislegis-ambiente-comum/"$VAGRANT_BACKUP_TAR" /var/cache
+    sudo tar rvfP /sislegis-ambiente-comum/"$VAGRANT_BACKUP_TAR" /fedy_dl
     salvar-instaladores
     exit
 }
@@ -18,13 +18,22 @@ grep -q ^$SISLEGIS_USER /etc/passwd || { echo "Usuário $SISLEGIS_USER não exis
 sudo -i -u $SISLEGIS_USER \
 $(eval echo -n ~$SISLEGIS_USER/sislegis-ambiente/scripts/salvar-instaladores)
 
-cd "$BASEDIR"
+comum="$BASEDIR"/../sislegis-ambiente-comum
+mkdir -p "$comum" && cd "$comum"
 for d in ${SISLEGIS_USER_DIRS[*]}
 do
-    [ $d = projetos ] && continue
     sudo bash <<EOF
 cd ~$SISLEGIS_USER
-rsync -avR --update --delete $d $PWD/
-chown $USER: $PWD/$d
+if [ -L $d ]
+then
+    mkdir "$PWD/$d"
+    rsync -avR --update --delete $d/ "$PWD/$d"/
+elif [ -d $d ]
+then
+    rsync -avR --update --delete $d "$PWD"/
+fi
 EOF
 done
+sudo chown -R $USER: "$comum"
+
+# vim: ts=4 sw=4 expandtab:

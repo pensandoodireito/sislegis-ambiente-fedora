@@ -20,7 +20,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 9990, host: 9990
 
   config.vm.provider "virtualbox" do |v|
-    #v.gui = true
+    v.gui = true
     v.memory = 2048
   end
+
+  # Local comum para os diretórios compartilhados entre os ambientes
+  config.vm.synced_folder "../sislegis-ambiente-comum", 
+    "/sislegis-ambiente-comum", create: true
 end

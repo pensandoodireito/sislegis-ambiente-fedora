@@ -1,8 +1,3 @@
-.forge
-.m2
 .vagrant
-.vagrant.backup*.tar
 .proxy
 config
-projetos
-sislegis-ambiente.instaladores
