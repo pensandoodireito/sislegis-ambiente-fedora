@@ -8,7 +8,6 @@ source "$BASEDIR"/defaults || exit 1
 
 [ $USER = vagrant ] && {
     sudo tar cvfP /sislegis-ambiente-comum/"$VAGRANT_BACKUP_TAR" /var/cache
-    sudo tar rvfP /sislegis-ambiente-comum/"$VAGRANT_BACKUP_TAR" /fedy_dl
     salvar-instaladores
     exit
 }

@@ -4,7 +4,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "chef/fedora-20"
+  config.vm.box = "boxcutter/fedora21"
   config.vm.box_check_update = false
 
   # Desabilita a atualização automática do VirtualBox Guest Additions
