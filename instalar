@@ -61,15 +61,16 @@ ${GITHUB_SISLEGIS_DOTFILES##*/}/install
 git config --global user.name '$GITHUB_NAME'
 git config --global user.email $GITHUB_EMAIL
 
-cat <<_EOF > ~/.projetos
-app=$GITHUB_SISLEGIS_APP
-site=$GITHUB_SISLEGIS_SITE
-_EOF
-
 git clone $GITHUB_SISLEGIS_AMBIENTE
 [ \$USER = vagrant ] && { 
     echo 'export PROJETOS_DIR=~/projetos' > ${GITHUB_SISLEGIS_AMBIENTE##*/}/ambiente.config
 }
+
+cat <<_EOF > ${GITHUB_SISLEGIS_AMBIENTE##*/}/.projetos
+app=$GITHUB_SISLEGIS_APP
+site=$GITHUB_SISLEGIS_SITE
+_EOF
+
 ${GITHUB_SISLEGIS_AMBIENTE##*/}/instalar
 
 source .\$(hostname -s)
