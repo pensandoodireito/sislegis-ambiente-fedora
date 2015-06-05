@@ -1,0 +1,3 @@
+- No script remover, encontrar os processos java pertencentes ao usuário (sislegis ou vagrant) e matá-los antes de remover os arquivos;
+- Atualizar o projeto sislegis-dotfiles com os scripts mais atuais do projeto https://github.com/paulojeronimo/dotfiles;
+- Atualizar o projeto sislegis-ambiente com os scripts mais atuais do projeto https://github.com/paulojeronimo/javaee-ambiente;
