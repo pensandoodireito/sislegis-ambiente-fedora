@@ -18,6 +18,7 @@ sudo -i -u $SISLEGIS_USER \
 $(eval echo -n ~$SISLEGIS_USER/sislegis-ambiente/scripts/salvar-instaladores)
 
 comum="$BASEDIR"/../sislegis-ambiente-comum
+sudo chown -R $SISLEGIS_USER: "$comum"
 mkdir -p "$comum" && cd "$comum"
 for d in ${SISLEGIS_USER_DIRS[*]}
 do
@@ -25,8 +26,7 @@ do
 cd ~$SISLEGIS_USER
 if [ -L $d ]
 then
-    mkdir "$PWD/$d"
-    rsync -avR --update --delete $d/ "$PWD/$d"/
+    rsync -avLR --update --delete $d/ "$PWD"/
 elif [ -d $d ]
 then
     rsync -avR --update --delete $d "$PWD"/
