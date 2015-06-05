@@ -54,6 +54,11 @@ Ao término do provisionamento, faça um reload da máquina com o comando abaixo
 vagrant reload
 ```
 
+Para eliminar o(s) kernel(s) antigo(s) e recuperar o espaço em disco ocupado(s) por ele(s), execute:
+```bash
+vagrant ssh -c 'sudo yum -y install yum-utils; sudo package-cleanup -y --oldkernels --count=1'
+```
+
 Após a montagem do ambiente, você pode acessar as URLs relatias a aplicação.
 
 Você pode ter acesso ao ambiente montado executando o seguinte comando:
@@ -80,3 +85,17 @@ sudo su - sislegis
 * Acesso a aplicação: http://sislegis.local:8080
 * Acesso a administração do Wildfly: http://silegis.local:9990
 * Acesso a administração dos usuários da aplicação: http://localhost:8180/auth
+
+## Salvando o ambiente
+
+O salvamento do ambiente é interessante de ser realizado para que ele possa ser reconstruído de forma mais ágil numa próxima montagem. Para realizar essa operação, execute o seguinte script dentro do ambiente que estiver senod executado (real ou o virtual executado pelo usuário ``vagrant``):
+
+```bash
+./salvar
+```
+
+Se o ambiente estiver sendo executado pelo ``vagrant``, também é possível executar o script de salvamente a partir do ``HOST`` da seguinte forma:
+
+```bash
+vagrant ssh -c /vagrant/salvar
+```
