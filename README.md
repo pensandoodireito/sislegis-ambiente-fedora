@@ -83,7 +83,7 @@ sudo su - sislegis
 ## URLs relativas a aplicação
 
 * Acesso a aplicação: http://sislegis.local:8080
-* Acesso a administração do Wildfly: http://silegis.local:9990
+* Acesso a administração do Wildfly: http://sislegis.local:9990
 * Acesso a administração dos usuários da aplicação: http://localhost:8180/auth
 
 ## Salvando o ambiente
@@ -98,4 +98,26 @@ Se o ambiente estiver sendo executado pelo ``vagrant``, também é possível exe
 
 ```bash
 vagrant ssh -c /vagrant/salvar
+```
+
+## Problemas conhecidos (e soluções)
+
+### Instalação do plugin vagrant-vbguest no ambiente Windows.
+
+No Windows 8.1, a execução do comando que instala o plugin ``vagrant-vbguest`` apresenta o seguinte problema:
+
+```bash
+$ vagrant plugin install vagrant-vbguest
+Installing the 'vagrant-vbguest' plugin. This can take a few minutes...
+C:/HashiCorp/Vagrant/embedded/lib/ruby/2.0.0/rubygems.rb:517:in `inflate': incorrect header check (Zlib::DataError)
+        from C:/HashiCorp/Vagrant/embedded/lib/ruby/2.0.0/rubygems.rb:517:in `inflate'
+        from C:/HashiCorp/Vagrant/embedded/gems/gems/bundler-1.7.11/lib/bundler/fetcher.rb:147:in `fetch_spec'
+```
+
+A solução definitiva para esse problema ainda não foi depurada.
+
+A solução de contorno é ignorar essa instalação. Para isso, você deve alterar o script ``instalar``, na linha em que é feito o update dos pacotes, para que a atualização do kernel seja ignorada. Essa alteração, após realizada, deverá deixar a linha que contém esse comando escrita da seguinte forma:
+
+```bash
+sudo yum -y update --exclude='kernel*'
 ```
