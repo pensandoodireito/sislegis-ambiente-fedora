@@ -13,3 +13,4 @@ GITHUB_SISLEGIS_DOTFILES=http://github.com/pensandoodireito/sislegis-dotfiles
 GITHUB_SISLEGIS_AMBIENTE=http://github.com/pensandoodireito/sislegis-ambiente
 GITHUB_SISLEGIS_SITE=http://github.com/pensandoodireito/sislegis-site
 GITHUB_SISLEGIS_APP=http://github.com/pensandoodireito/sislegis-app
+GITHUB_SISLEGIS_APP_FRONTEND=http://github.com/pensandoodireito/sislegis-app-frontend
