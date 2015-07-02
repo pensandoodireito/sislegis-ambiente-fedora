@@ -83,6 +83,7 @@ sudo su - sislegis
 ## URLs relativas a aplicação
 
 * Acesso a aplicação: http://sislegis.local:8080
+    * Usuário/senha: sislegis/@dmin123
 * Acesso a administração do Wildfly: http://sislegis.local:9990
     * Usuário/senha: sislegis/@dmin123
 * Acesso a administração dos usuários da aplicação: http://localhost:8080/auth

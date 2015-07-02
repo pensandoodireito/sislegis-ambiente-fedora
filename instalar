@@ -52,7 +52,8 @@ fi
 
 executar_e_inserir_no_bashrc "export INSTALA_OPCS+=\" $BAIXA_ARQUIVO\""
 
-sudo yum -y update
+sudo yum -y update --exclude='kernel*'
+ 
 sudo yum -y install rsync tar unzip wget git tree dos2unix lsof redhat-lsb-core vim java-1.8.0-openjdk-devel
 
 git clone $GITHUB_SISLEGIS_DOTFILES
