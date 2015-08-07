@@ -49,6 +49,8 @@ vagrant up
 vagrant ssh -c /vagrant/instalar
 ```
 
+Atenção, se você estiver numa rede com o proxy, é preciso configurar a variável proxy em [/etc/yum.conf](https://www.centos.org/docs/5/html/yum/sn-yum-proxy-server.html).
+
 Ao término do provisionamento, faça um reload da máquina com o comando abaixo. Dessa forma, após a reinicialização, se houver alguma atualização de kernel, o plugin ``vagrant-vbguest`` ficará encarregado de instalar o [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) nesse novo kernel.
 ```bash
 vagrant reload
